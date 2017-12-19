@@ -53,7 +53,7 @@
     - configuration
   template:
     src: "nrpe_d.cfg.j2"
-    dest: "{{ nrpe_check_dir }}/{{ item }}"
+    dest: "{{ nrpe_check_dir }}/{{ item.key }}.cfg"
     owner: root
     group: root
     mode: "0644"
