@@ -57,8 +57,7 @@
     owner: root
     group: root
     mode: "0644"
-  with_dict:
-    - "{{ nrpe_command }}"
+  with_dict: "{{ nrpe_command }}"
   notify: Restart NRPE
 
 - name: Install global plugins
