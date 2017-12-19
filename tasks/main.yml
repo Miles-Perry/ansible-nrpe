@@ -47,7 +47,7 @@
     mode: "0644"
   notify: Restart NRPE
 
-- name: NRPE | Create checks from template
+- name: NRPE | Create NRPE checks from command dictionary
   tags:
     - nrpe
     - configuration
@@ -57,7 +57,7 @@
     owner: root
     group: root
     mode: "0644"
-  with_items:
+  with_dict:
     - "{{ nrpe_command }}"
   notify: Restart NRPE
 
