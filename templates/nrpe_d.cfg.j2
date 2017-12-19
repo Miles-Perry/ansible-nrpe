@@ -2,6 +2,6 @@
 
 {% if nagios_nrpe_command is defined %}
 {% for command in nagios_nrpe_command %}
-command[{{ command }}]={{ nagios_nrpe_server_plugins_dir }}/{{ nagios_nrpe_command[command]["script"] }} {{ nagios_nrpe_command[command]["option"] }}
+command[{{ command }}]={{ nrpe_plugins_dir }}/{{ nagios_nrpe_command[command]["script"] }} {{ nagios_nrpe_command[command]["option"] }}
 {% endfor %}
 {% endif %}
