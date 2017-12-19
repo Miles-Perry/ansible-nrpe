@@ -19,7 +19,7 @@
   assert:
     that: nrpe_os_supported == True
 
-- name: nrpe | Set facts for nrpe_manage_service and nrpe_allow_restart
+- name: NRPE | Set facts for nrpe_manage_service and nrpe_allow_restart
   tags:
     - nrpe
   set_fact:
@@ -27,12 +27,18 @@
     nrpe_allow_restart: "{{ false if ansible_virtualization_type == 'docker' else true }}"
 
 - name: NRPE | Install Nagios NRPE Packages
+  tags:
+    - nrpe
+    - install
   yum:
     name: "{{ item }}"
     state: present
   with_items: "{{ nrpe_packages }}"
 
-- name: Create nrpe.cfg from template
+- name: NRPE | Create nrpe.cfg from template
+  tags:
+    - nrpe
+    - configuration
   template:
     src: "nrpe.cfg.j2"
     dest: "{{ nrpe_dir }}/nrpe.cfg"
@@ -41,13 +47,18 @@
     mode: "0644"
   notify: Restart NRPE
 
-- name: Create checks from template
+- name: NRPE | Create checks from template
+  tags:
+    - nrpe
+    - configuration
   template:
     src: "nrpe_d.cfg.j2"
     dest: "{{ nrpe_check_dir }}/{{ item }}"
     owner: root
     group: root
     mode: "0644"
+  with_items:
+    - "{{ nrpe_command }}"
   notify: Restart NRPE
 
 - name: Install global plugins
