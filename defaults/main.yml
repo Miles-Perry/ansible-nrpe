@@ -22,3 +22,4 @@ nrpe_skip_defaults: false
 nrpe_os_supported: no
 
 nrpe: {}
+nrpe_command: {}

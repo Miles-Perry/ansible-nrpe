@@ -1,7 +1,3 @@
 {{ ansible_managed | comment }}
 
-{% if nagios_nrpe_command is defined %}
-{% for command in nagios_nrpe_command %}
-command[{{ command }}]={{ nrpe_plugins_dir }}/{{ nagios_nrpe_command[command]["script"] }} {{ nagios_nrpe_command[command]["option"] }}
-{% endfor %}
-{% endif %}
+command[{{ item }}]={{ item.location | default(nrpe_plugins_dir) }}/{{ item.script }} {{ item.option }}

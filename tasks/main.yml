@@ -41,10 +41,10 @@
     mode: "0644"
   notify: Restart NRPE
 
-- name: Create nrpe_ansible.cfg from template
+- name: Create checks from template
   template:
     src: "nrpe_d.cfg.j2"
-    dest: "{{ nagios_nrpe_server_dir }}/nrpe_ansible.cfg"
+    dest: "{{ nrpe_check_dir }}/{{ item }}"
     owner: root
     group: root
     mode: "0644"
@@ -53,7 +53,7 @@
 - name: Install global plugins
   copy:
     src: "{{ item }}"
-    dest: "{{ nagios_nrpe_server_plugins_dir }}/"
+    dest: "{{ nrpe_plugins_dir }}/"
     owner: root
     group: root
     mode: "0755"
@@ -63,7 +63,7 @@
 - name: Install per-server plugins
   copy:
     src: "{{ item }}"
-    dest: "{{ nagios_nrpe_server_plugins_dir }}/"
+    dest: "{{ nrpe_plugins_dir }}/"
     owner: root
     group: root
     mode: "0755"
@@ -72,6 +72,6 @@
 
 - name: Ensure NRPE server is running
   service:
-    name: "{{ nagios_nrpe_server_service }}"
+    name: "{{ nrpe_service }}"
     state: started
     enabled: yes
