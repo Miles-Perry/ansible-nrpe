@@ -1,39 +1,55 @@
 ---
-# Nagios NRPE Server role by Mooash
+# Original role: Nagios NRPE Server role by Mooash
+- name: NRPE | Include OS-Specific variables
+  tags:
+    - nrpe
+  include_vars: "{{ item }}"
+  with_first_found:
+    - "{{ansible_distribution}}_{{ansible_distribution_major_version}}_{{ansible_distribution_minor_version}}.yml"
+    - "{{ansible_distribution}}_{{ansible_distribution_major_version}}.yml"
+    - "{{ansible_distribution}}.yml"
+    - "{{ansible_os_family}}_{{ansible_distribution_major_version}}_{{ansible_distribution_minor_version}}.yml"
+    - "{{ansible_os_family}}_{{ansible_distribution_major_version}}.yml"
+    - "{{ansible_os_family}}.yml"
+    - default.yml
 
-# Include variables at the start so they're in scope
-- name: Include OS-Specific variables
-  include_vars: "{{ ansible_os_family }}.yml"
+- name: NRPE | Assert that OS is supported
+  tags:
+    - nrpe
+  assert:
+    that: nrpe_os_supported == True
 
-# Include RedHat specific variables due to x64/x86 differences
-- name: Include RedHat architecture specific variables
-  include_vars: "{{ ansible_os_family }}-{{ ansible_architecture }}.yml"
-  when: "'{{ ansible_os_family }}' == 'RedHat'"
+- name: nrpe | Set facts for nrpe_manage_service and nrpe_allow_restart
+  tags:
+    - nrpe
+  set_fact:
+    nrpe_manage_service: "{{ false if ansible_virtualization_type == 'docker' else true }}"
+    nrpe_allow_restart: "{{ false if ansible_virtualization_type == 'docker' else true }}"
 
-# Install our needed packages for each specific OS
-- include: "packages-{{ ansible_os_family }}.yml"
+- name: NRPE | Install Nagios NRPE Packages
+  yum:
+    name: "{{ item }}"
+    state: present
+  with_items: "{{ nrpe_packages }}"
 
-# Create our config
 - name: Create nrpe.cfg from template
   template:
     src: "nrpe.cfg.j2"
-    dest: "{{ nagios_nrpe_server_dir }}/nrpe.cfg"
+    dest: "{{ nrpe_dir }}/nrpe.cfg"
     owner: root
     group: root
     mode: "0644"
-  notify: restart nagios-nrpe-server
+  notify: Restart NRPE
 
-# Create nrpe_ansible.cfg
 - name: Create nrpe_ansible.cfg from template
   template:
-    src: "nrpe_ansible.cfg.j2"
+    src: "nrpe_d.cfg.j2"
     dest: "{{ nagios_nrpe_server_dir }}/nrpe_ansible.cfg"
     owner: root
     group: root
     mode: "0644"
-  notify: restart nagios-nrpe-server
+  notify: Restart NRPE
 
-# Sync our plugins
 - name: Install global plugins
   copy:
     src: "{{ item }}"
@@ -42,9 +58,8 @@
     group: root
     mode: "0755"
   with_fileglob:
-    - plugins/global/*
+    - {{ datadir }}/plugins/global/*
 
-# Install per-server plugins
 - name: Install per-server plugins
   copy:
     src: "{{ item }}"
@@ -53,9 +68,8 @@
     group: root
     mode: "0755"
   with_fileglob:
-    - "plugins/{{ ansible_fqdn }}/*"
+    - "{{ datadir }}/plugins/{{ ansible_fqdn }}/*"
 
-# Ensure NRPE server is running and will start at boot
 - name: Ensure NRPE server is running
   service:
     name: "{{ nagios_nrpe_server_service }}"

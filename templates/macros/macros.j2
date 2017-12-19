@@ -1,0 +1,27 @@
+{% macro body_option(key,override) -%}
+{%   set value = undefined %}
+{%   if override is defined %}
+{%     set value = override %}
+{%   elif nrpe[key] is defined %}
+{%     set value = nrpe[key] %}
+{%   elif nrpe_defaults[key] is defined and nrpe_skip_defaults != true %}
+{%     set value = nrpe_defaults[key] %}
+{%   endif %}
+{{ render_option(key, value) }}
+{%- endmacro %}
+
+{% macro render_option(key, value, indent=false) -%}
+{%   if value is defined %}
+{%     if indent == true %}  {% endif %}
+{%     if value is sameas true %}
+{{ key }}
+{%     elif value is sameas false %}
+{%     elif value is string or value is number %}
+{{ key }} {{ value }}
+{%     else %}
+{%       for i in value %}
+{{ key }} {{ i }}
+{%       endfor %}
+{%     endif %}
+{%   endif %}
+{%- endmacro %}

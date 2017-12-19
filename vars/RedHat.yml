@@ -3,8 +3,46 @@
 # We're required to do this as the user/group NRPE is run under
 # differes between RedHat/Debian OS's
 
-nagios_nrpe_server_pid: /var/run/nrpe/nrpe.pid
-nagios_nrpe_server_user: nrpe
-nagios_nrpe_server_group: nrpe
-nagios_nrpe_server_service: nrpe
-nagios_nrpe_server_dir: /etc/nagios
+nrpe_pid: /var/run/nrpe/nrpe.pid
+nrpe_user: nrpe
+nrpe_group: nrpe
+nrpe_service: nrpe
+nrpe_plugins_dir: /usr/lib64/nagios/plugins
+nrpe_dir: /etc/nagios
+
+#
+# Addition to the original package, since RedHat includes the
+# /etc/nrpe.d folder for individual checks.
+#
+nrpe_check_dir: /etc/nrpe.d
+
+#
+# Assert that we support the operating system being used
+#
+nrpe_os_supported: true
+
+#
+# Red Hat Default variables
+#
+nrpe_defaults:
+  server_address: 127.0.0.1
+  bind_address: 127.0.0.1
+  allowed_hosts: 127.0.0.1
+  port: 5666
+  dont_blame_nrpe: 0
+  log_facility: daemon
+  allow_bash_command_substitution: 0
+  debug: 0
+  command_timeout: 60
+  connection_timeout: 300
+  allow_weak_random_seed: 0
+  include_dir:
+    - "{{ nrpe_check_dir }}"
+
+#
+# NRPE Packages from EPEL
+#
+nrpe_packages:
+  - nrpe
+  - nagios-plugins-all
+  - nagios-plugins-uptime

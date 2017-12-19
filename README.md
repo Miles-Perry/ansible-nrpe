@@ -5,33 +5,22 @@ Nagios NRPE Server Config
 
 An Ansible role to handle the installation and rollout of the Nagios NRPE Daemon.
 
-I've only selected certain platforms that I know this 100% works on, but it should work on any platform that NRPE can be installed on.
-
-Currently supports:
-
- * Debian
-   - Squeeze
-   - Wheezy
- * Ubuntu
-   - Raring
-   - Saucy
-   - Trusty
- * RedHat
-   - At least 6 onwards
- * Arch Linux
-   - All
- * Solaris
-   - At least 11.1
+This role currently supports:
+  - Red Hat Enterprise Linux 7
+  - CentOS 7
+  - Fedora versions
 
 Requirements
 ------------
 
-RedHat based OS's must have the EPEL repo.
+RedHat based OS's must already have the EPEL repo installed and configured.
 
 Role Information
 --------------
 
-This role gives you the ability to deploy plugins on a global and per-server basis. This can be done by putting plugins into [`files/plugins/global`](files/plugins/global) or by creating a folder in `files/plugins/` that is the servers [FQDN](http://en.wikipedia.org/wiki/Fully_qualified_domain_name).
+This role gives you the ability to deploy plugins on a global and per-server basis. This can be done by:
+* putting plugins into [`files/plugins/global`](files/plugins/global) or
+* by creating a folder in `files/plugins/` that is the servers [FQDN](http://en.wikipedia.org/wiki/Fully_qualified_domain_name).
 
 You can find out your servers FQDN by running the [Ansible Setup](http://docs.ansible.com/setup_module.html) module.
 
@@ -45,15 +34,6 @@ Role Variables
 
 These are OS specific and likely wont want to be changed
 
-Debian:
-
-  * *nagios_nrpe_server_pid*: /var/run/nagios/nrpe.pid
-  * *nagios_nrpe_server_user*: nagios
-  * *nagios_nrpe_server_group*: nagios
-  * *nagios_nrpe_server_service*: nagios-nrpe-server
-  * *nagios_nrpe_server_plugins_dir*: /usr/lib/nagios/plugins
-  * *nagios_nrpe_server_dir*: /etc/nagios
-
 RedHat:
 
   * *nagios_nrpe_server_pid*: /var/run/nrpe/nrpe.pid
@@ -62,22 +42,6 @@ RedHat:
   * *nagios_nrpe_server_repo_redhat*: epel
   * *nagios_nrpe_server_service*: nrpe
   * *nagios_nrpe_server_dir*: /etc/nagios
-
-Arhc Linux:
-  * *nagios_nrpe_server_pid*: /var/run/nrpe/nrpe.pid
-  * *nagios_nrpe_server_user*: 31
-  * *nagios_nrpe_server_group*: 31
-  * *nagios_nrpe_server_service*: nrpe
-  * *nagios_nrpe_server_plugins_dir*: /usr/lib/monitoring-plugins
-  * *nagios_nrpe_server_dir*: /etc/nrpe
-
-Solaris:
-  * *nagios_nrpe_server_dir*: /etc/opt/csw
-  * *nagios_nrpe_server_group*: nagios
-  * *nagios_nrpe_server_pid*: /var/run/nrpe.pid
-  * *nagios_nrpe_server_plugins_dir*: /opt/csw/libexec/nagios-plugins
-  * *nagios_nrpe_server_service*: svc:/network/cswnrpe:default
-  * *nagios_nrpe_server_user*: nagios
 
 Dependencies
 ------------
@@ -90,26 +54,26 @@ Example Playbook
 ```yaml
 - hosts: servers
   roles:
-     - mooash.nagios-nrpe-server
-   vars:
-     nagios_nrpe_server_allowed_hosts:
-       - 192.168.0.1
-       - 127.0.0.1
-     nagios_nrpe_command:
-       oracle_tnsping:
-         script: check_oracle_health
-         option: --mode tnsping
-       oracle_connection-time:
-         script: check_oracle_health
-         option: --mode connection-time
+     - ISU-Ansible.nrpe
+  vars:
+    nagios_nrpe_server_allowed_hosts:
+      - 192.168.0.1
+      - 127.0.0.1
+    nagios_nrpe_command:
+      oracle_tnsping:
+        script: check_oracle_health
+        option: --mode tnsping
+      oracle_connection-time:
+        script: check_oracle_health
+        option: --mode connection-time
 ```
 
 License
 -------
-
 MIT
 
 Author Information
 ------------------
+* Barry Britt
 
-Checkout my blog [here](http://blog.jloh.co).
+This role was adapted from the nagios-nrpe-server role by jloh. Checkout his blog [here](http://blog.jloh.co).

@@ -1,9 +1,5 @@
-#################################
-# THIS FILE IS MANAGED BY ANSIBLE
-# DO NOT EDIT LOCALLY
-#################################
+{{ ansible_managed | comment }}
 
-# Command NRPE
 {% if nagios_nrpe_command is defined %}
 {% for command in nagios_nrpe_command %}
 command[{{ command }}]={{ nagios_nrpe_server_plugins_dir }}/{{ nagios_nrpe_command[command]["script"] }} {{ nagios_nrpe_command[command]["option"] }}

@@ -1,5 +1,24 @@
 ---
-nagios_nrpe_server_bind_address: 127.0.0.1
-nagios_nrpe_server_port: 5666
-nagios_nrpe_server_allowed_hosts: 127.0.0.1
-nagios_nrpe_server_dont_blame_nrpe: 0
+#
+# Check for virtualization types. If we're virtualized (mainly testing), then
+# don't try to manage or reload the service
+#
+nrpe_manage_service: {}
+nrpe_allow_restart: {}
+
+#
+# Should we skil the defaults provided by the operating system? This should
+# typically be set to false. If you are generating a completely independent
+# configuration file, then you should probably set this to try and override
+# the nrpe variable below.
+#
+nrpe_skip_defaults: false
+
+#
+# By default, we set the os_supported variable to "no". This way, we can
+# override it in the vars defaults files for any OS that we can support with
+# this role.
+#
+nrpe_os_supported: no
+
+nrpe: {}

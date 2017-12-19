@@ -1,1 +1,2 @@
-v3.0.1
+ansible-nrpe: v0.1
+nagios-nrpe-server: v3.0.1
