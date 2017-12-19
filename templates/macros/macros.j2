@@ -14,9 +14,9 @@
 {%   if value is defined %}
 {%     if indent == true %}  {% endif %}
 {%     if value is string or value is number %}
-{{ key }} = {{ value }}
+{{ key }}={{ value }}
 {%     else %}
-{{ key }} = {{ value | join(",") }}
+{{ key }}={{ value | join(",") }}
 {%     endif %}
 {%   endif %}
 {%- endmacro %}
