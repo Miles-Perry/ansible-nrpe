@@ -58,7 +58,7 @@
     group: root
     mode: "0755"
   with_fileglob:
-    - {{ datadir }}/plugins/global/*
+    - "{{ datadir }}/plugins/global/*"
 
 - name: Install per-server plugins
   copy:
