@@ -5,6 +5,6 @@
 
 - name: Restart NRPE
   service:
-    name: "{{ nagios_nrpe_server_service }}"
+    name: "{{ nrpe_service }}"
     state: restarted
   when: nrpe_allow_restart
