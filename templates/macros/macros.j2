@@ -16,7 +16,7 @@
 {%     if value is string or value is number %}
 {{ key }} = {{ value }}
 {%     else %}
-{{ key }} = {{ i | join(",") }}
+{{ key }} = {{ value | join(",") }}
 {%     endif %}
 {%   endif %}
 {%- endmacro %}
