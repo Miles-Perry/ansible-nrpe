@@ -47,6 +47,10 @@
     mode: "0644"
   notify: Restart NRPE
 
+- debug:
+    var: "{{ item }}"
+  with_dict: nrpe_command
+
 - name: NRPE | Create NRPE checks from command dictionary
   tags:
     - nrpe
