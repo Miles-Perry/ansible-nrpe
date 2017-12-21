@@ -96,7 +96,7 @@
     owner: root
     group: root
     mode: "0644"
-  with_dict: "{{ nrpe_command }}"
+  with_dict: "{{ nrpe_command.default }}"
   notify: Restart NRPE
 
 - name: NRPE | Create NRPE host-specific checks
