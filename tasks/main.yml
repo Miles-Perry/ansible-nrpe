@@ -1,5 +1,9 @@
 ---
 # Original role: Nagios NRPE Server role by Mooash
+
+#
+# Nagios OS Specific Variables
+#
 - name: NRPE | Include OS-Specific variables
   tags:
     - nrpe
@@ -13,6 +17,9 @@
     - "{{ansible_os_family}}.yml"
     - default.yml
 
+#
+# Check that we are on a supported os and whether or not we are virtualized
+#
 - name: NRPE | Assert that OS is supported
   tags:
     - nrpe
@@ -26,6 +33,9 @@
     nrpe_manage_service: "{{ false if ansible_virtualization_type == 'docker' else true }}"
     nrpe_allow_restart: "{{ false if ansible_virtualization_type == 'docker' else true }}"
 
+#
+# Install Nagios
+#
 - name: NRPE | Install Nagios NRPE Packages
   tags:
     - nrpe
@@ -35,6 +45,9 @@
     state: present
   with_items: "{{ nrpe_packages }}"
 
+#
+# Configure NRPE
+#
 - name: NRPE | Create nrpe.cfg from template
   tags:
     - nrpe
@@ -47,6 +60,9 @@
     mode: "0644"
   notify: Restart NRPE
 
+#
+# Configure NRPE Checks
+#
 - name: NRPE | Create NRPE checks from command dictionary
   tags:
     - nrpe
@@ -58,6 +74,19 @@
     group: root
     mode: "0644"
   with_dict: "{{ nrpe_command }}"
+  notify: Restart NRPE
+
+- name: NRPE | Create NRPE host-specific checks
+  tags:
+    - nrpe
+    - configuration
+  template:
+    src: "nrpe_d.cfg.j2"
+    dest: "{{ nrpe_check_dir }}/{{ ansible_hostname }}.{{ item.key }}.cfg"
+    owner: root
+    group: root
+    mode: 0664
+  with_dict: "{{ nrpe_command }}.{{ ansible_hostname }}"
   notify: Restart NRPE
 
 - name: Install global plugins
