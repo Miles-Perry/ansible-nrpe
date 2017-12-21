@@ -71,7 +71,7 @@
     group: root
     mode: "0755"
   with_fileglob:
-    - "{{ datadir }}/nrpe/plugins/global/*"
+    - "{{ nrpe_data }}/nrpe/plugins/global/*"
 
 - name: NRPE | Install per-server plugins
   copy:
@@ -81,7 +81,7 @@
     group: root
     mode: "0755"
   with_fileglob:
-    - "{{ datadir }}/nrpe/plugins/{{ ansible_fqdn }}/*"
+    - "{{ nrpe_data }}/nrpe/plugins/{{ ansible_fqdn }}/*"
 
 #
 # Configure NRPE Checks
@@ -106,7 +106,7 @@
     - configuration
   template:
     src: "nrpe_d.cfg.j2"
-    dest: "{{ nrpe_check_dir }}/{{ ansible_fqdn }}.{{ item.key }}.cfg"
+    dest: "{{ nrpe_check_dir }}/{{ item.key }}.cfg"
     owner: root
     group: root
     mode: 0664
