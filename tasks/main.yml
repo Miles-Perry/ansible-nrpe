@@ -109,9 +109,9 @@
     owner: root
     group: root
     mode: 0664
-  with_dict: "{{ nrpe_command }}_{{ ansible_fqdn }}"
+  with_dict: "{{ nrpe_command }}.{{ ansible_fqdn }}"
   notify: Restart NRPE
-  when: "{{ nrpe_command }}_{{ ansible_fqdn }} exists"
+  when: "{{ nrpe_command }}.{{ ansible_fqdn }} exists"
 
 #
 # Service initialization
