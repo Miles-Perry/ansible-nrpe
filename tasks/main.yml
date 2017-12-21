@@ -61,6 +61,29 @@
   notify: Restart NRPE
 
 #
+# Install NRPE Plugins
+#
+- name: NRPE | Install global plugins
+  copy:
+    src: "{{ item }}"
+    dest: "{{ nrpe_plugins_dir }}/"
+    owner: root
+    group: root
+    mode: "0755"
+  with_fileglob:
+    - "{{ datadir }}/nrpe/plugins/global/*"
+
+- name: NRPE | Install per-server plugins
+  copy:
+    src: "{{ item }}"
+    dest: "{{ nrpe_plugins_dir }}/"
+    owner: root
+    group: root
+    mode: "0755"
+  with_fileglob:
+    - "{{ datadir }}/nrpe/plugins/{{ ansible_fqdn }}/*"
+
+#
 # Configure NRPE Checks
 #
 - name: NRPE | Create NRPE checks from command dictionary
@@ -82,33 +105,16 @@
     - configuration
   template:
     src: "nrpe_d.cfg.j2"
-    dest: "{{ nrpe_check_dir }}/{{ ansible_hostname }}.{{ item.key }}.cfg"
+    dest: "{{ nrpe_check_dir }}/{{ ansible_fqdn }}.{{ item.key }}.cfg"
     owner: root
     group: root
     mode: 0664
-  with_dict: "{{ nrpe_command }}.{{ ansible_hostname }}"
+  with_dict: "{{ nrpe_command }}.{{ ansible_fqdn }}"
   notify: Restart NRPE
 
-- name: Install global plugins
-  copy:
-    src: "{{ item }}"
-    dest: "{{ nrpe_plugins_dir }}/"
-    owner: root
-    group: root
-    mode: "0755"
-  with_fileglob:
-    - "{{ datadir }}/nrpe/plugins/global/*"
-
-- name: Install per-server plugins
-  copy:
-    src: "{{ item }}"
-    dest: "{{ nrpe_plugins_dir }}/"
-    owner: root
-    group: root
-    mode: "0755"
-  with_fileglob:
-    - "{{ datadir }}/nrpe/plugins/{{ ansible_fqdn }}/*"
-
+#
+# Service initialization
+#
 - name: Ensure NRPE server is running
   service:
     name: "{{ nrpe_service }}"
