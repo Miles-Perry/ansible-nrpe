@@ -98,6 +98,7 @@
     mode: "0644"
   with_dict: "{{ nrpe_command['default'] }}"
   when: nrpe_command['default']
+  ignore_errors: true
   notify: Restart NRPE
 
 - name: NRPE | Create NRPE host-specific checks
@@ -112,6 +113,7 @@
     mode: 0664
   with_dict: "{{ nrpe_command[ansible_fqdn] }}"
   when: nrpe_command[ansible_fqdn] exists
+  ignore_errors: true
   notify: Restart NRPE
 
 #
