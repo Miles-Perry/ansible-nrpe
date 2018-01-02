@@ -25,7 +25,9 @@ nrpe_os_supported: true
 # Red Hat Default variables
 #
 nrpe_defaults:
-  server_address: 127.0.0.1
+  server_address:
+    - 127.0.0.1
+    - "{{ ansible_default_ipv4.address }}"
   bind_address: 127.0.0.1
   allowed_hosts: 127.0.0.1
   port: 5666

@@ -111,7 +111,7 @@
     group: root
     mode: 0664
   with_dict: "{{ nrpe_command[ansible_fqdn] }}"
-  when: nrpe_command[ansible_fqdn]
+  when: nrpe_command[ansible_fqdn] exists
   notify: Restart NRPE
 
 #
