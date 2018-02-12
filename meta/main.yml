@@ -1,25 +1,13 @@
 ---
 galaxy_info:
-  author: Mooash
+  author: Barry Britt <bbritt@iastate.edu>
   description: Nagios NRPE Server configuration Ansible Role
   license: license (MIT)
   min_ansible_version: 1.2
   platforms:
-  - name: Ubuntu
+  - name: EL
     versions:
-    - raring
-    - saucy
-    - trusty
-  - name: Debian
-    versions:
-    - squeeze
-    - wheezy
-  - name: ArchLinux
-    versions:
-    - all
-  - name: Solaris
-    versions:
-    - 11.1
+    - 7
   categories:
     - monitoring
     - system

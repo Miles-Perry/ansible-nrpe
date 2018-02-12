@@ -96,8 +96,8 @@
     owner: root
     group: root
     mode: "0644"
-  with_dict: "{{ nrpe_command['default'] }}"
-  when: nrpe_command['default']
+  with_dict: "{{ nrpe_commands_default }}"
+  when: nrpe_commands_default
   ignore_errors: true
   notify: Restart NRPE
 
@@ -111,8 +111,8 @@
     owner: root
     group: root
     mode: 0664
-  with_dict: "{{ nrpe_command[ansible_fqdn] }}"
-  when: nrpe_command[ansible_fqdn] exists
+  with_dict: "{{ ansible_fqdn }}"
+  when: ansible_fqdn exists
   ignore_errors: true
   notify: Restart NRPE
 
