@@ -111,7 +111,7 @@
     owner: root
     group: root
     mode: 0664
-  with_dict: "{{ ansible_fqdn | replace('.', '_') }}"
+  with_items: "{{ ansible_fqdn | replace('.', '_') }}"
   ignore_errors: true
   notify: Restart NRPE
 
