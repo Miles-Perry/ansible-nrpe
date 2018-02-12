@@ -101,8 +101,6 @@
   ignore_errors: true
   notify: Restart NRPE
 
-- debug:
-    var: ansible_fqdn | replace('.', '_')
 - name: NRPE | Create NRPE host-specific checks
   tags:
     - nrpe
@@ -113,7 +111,7 @@
     owner: root
     group: root
     mode: 0664
-  with_dict: "{{ ansible_fqdn | replace('.', '_') }}"
+  with_dict: "{{ nrpe_commands[ansible_fqdn] }}"
   ignore_errors: true
   notify: Restart NRPE
 
