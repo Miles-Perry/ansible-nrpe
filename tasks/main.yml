@@ -95,7 +95,7 @@
     dest: "{{ nrpe_check_dir }}/{{ item.key }}.cfg"
     owner: root
     group: root
-    mode: "0644"
+    mode: "0755"
   with_dict: "{{ nrpe_commands_default }}"
   when: nrpe_commands_default
   ignore_errors: true
@@ -111,8 +111,7 @@
     owner: root
     group: root
     mode: 0664
-  with_dict: "{{ ansible_fqdn }}"
-  when: ansible_fqdn exists
+  with_dict: "{{ ansible_fqdn | replace('.', '_') }}"
   ignore_errors: true
   notify: Restart NRPE
 
