@@ -40,9 +40,10 @@
   tags:
     - nrpe
     - install
-  package:
+  yum:
     name: "{{ item }}"
     state: present
+    enablerepo: las_EPEL7_epel7
   with_items: "{{ nrpe_packages }}"
 
 #
