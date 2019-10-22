@@ -43,7 +43,7 @@
   yum:
     name: "{{ item }}"
     state: present
-    enablerepo: las_EPEL7_epel7
+    enablerepo: "{{ repo }}"
   with_items: "{{ nrpe_packages }}"
 
 #
