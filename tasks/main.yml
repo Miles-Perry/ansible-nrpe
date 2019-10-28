@@ -40,11 +40,13 @@
   tags:
     - nrpe
     - install
-  yum:
-    name: "{{ item }}"
-    state: present
-    enablerepo: "{{ repo }}"
-    
+  
+  when: (ansible_facts['distribution']  == "RedHat")
+    yum:
+      name: "{{ item }}"
+      state: present
+      enablerepo: "{{ repo }}"
+
   with_items: "{{ nrpe_packages }}"
 
 #
