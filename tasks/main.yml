@@ -44,6 +44,7 @@
     name: "{{ item }}"
     state: present
     enablerepo: "{{ repo }}"
+    
   with_items: "{{ nrpe_packages }}"
 
 #
