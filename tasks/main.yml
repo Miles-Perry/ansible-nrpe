@@ -41,13 +41,18 @@
     - nrpe
     - install
   
+  when: (ansible_facts['distribution'] =! "RedHat")
+    package:
+      name: "{{ item }}"
+      state: present
+    with_items: "{{ nrpe_packages }}"
+
   when: (ansible_facts['distribution']  == "RedHat")
     yum:
       name: "{{ item }}"
       state: present
       enablerepo: "{{ repo }}"
-
-  with_items: "{{ nrpe_packages }}"
+    with_items: "{{ nrpe_packages }}"
 
 #
 # Configure NRPE
