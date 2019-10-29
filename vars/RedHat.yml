@@ -48,3 +48,5 @@ nrpe_packages:
   - nrpe
   - nagios-plugins-all
   - nagios-plugins-uptime
+
+epel_repo: "las_EPEL7_epel7"

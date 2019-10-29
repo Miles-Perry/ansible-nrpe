@@ -51,7 +51,7 @@
     yum:
       name: "{{ item }}"
       state: present
-      enablerepo: "{{ repo }}"
+      enablerepo: "{{ epel_repo }}"
     with_items: "{{ nrpe_packages }}"
 
 #
