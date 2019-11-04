@@ -41,11 +41,11 @@
     - nrpe
     - install
 
-    yum:
-      name: "{{ item }}"
-      state: present
-      enablerepo: "{{ epel_repo }}"
-    with_items: "{{ nrpe_packages }}"
+  yum:
+    name: "{{ item }}"
+    state: present
+    enablerepo: "{{ epel_repo }}"
+  with_items: "{{ nrpe_packages }}"
 
 #
 # Configure NRPE
