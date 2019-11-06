@@ -48,3 +48,4 @@ nrpe_packages:
   - nrpe
   - nagios-plugins-all
   - nagios-plugins-uptime
+  - nagios-plugins-openmanage
