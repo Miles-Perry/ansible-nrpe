@@ -8,6 +8,7 @@ nrpe_user: nrpe
 nrpe_group: nrpe
 nrpe_service: nrpe
 nrpe_plugins_dir: /usr/lib64/nagios/plugins
+opt_nrpe_plugins_dir: /opt/nagios/plugins
 nrpe_dir: /etc/nagios
 
 #
