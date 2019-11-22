@@ -68,7 +68,7 @@
 - name: NRPE | Install global plugins
   copy:
     src: "{{ item }}"
-    dest: "{{ nrpe_plugins_dir }}/"
+    dest: "{{ opt_nrpe_plugins_dir_path }}/"
     owner: root
     group: root
     mode: "0755"
