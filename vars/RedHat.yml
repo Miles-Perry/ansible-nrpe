@@ -50,5 +50,6 @@ nrpe_packages:
   - nagios-plugins-uptime
   - nagios-plugins-openmanage
   - nagios-plugins-bonding
+  - smartmontools
 
 epel_repo: "las_EPEL7_epel7"
