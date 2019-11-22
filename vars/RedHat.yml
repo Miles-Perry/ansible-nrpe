@@ -49,3 +49,4 @@ nrpe_packages:
   - nagios-plugins-all
   - nagios-plugins-uptime
   - nagios-plugins-openmanage
+  - smartmontools
